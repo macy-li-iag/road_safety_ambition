@@ -1,0 +1,82 @@
+---
+title: "Driving Experience"
+author: William You
+date: 21 June, 2018
+output: 
+  ioslides_presentation:
+    css: 'C:/road_safety_ambition/driver experience/format.css'
+widescreen: True
+
+---
+
+## Claim Frequency By Driver Experience{#drvexp}
+<style> .image-wrapper p { margin-top: -50px; } #drvexp,#drvexp2,#age1,#age2,#expage,#expage2 { display: flex; }</style>
+
+<div class="image-wrapper">
+```{r drvexp, echo=FALSE,warning=FALSE,fig.align="left",fig.width=8,fig.height=6}
+plotexp
+
+```
+</div>
+<div >
+- Driver's with less experience are more likely to claim than older drivers (~5%).
+</div>
+
+## Average Claim Cost By Driver Experience{#drvexp2}
+
+<div class="image-wrapper">
+```{r drvexp2, echo=FALSE,warning=FALSE,fig.align="left",fig.width=7,fig.height=6}
+
+plotexp2
+
+```
+</div>
+
+<div>
+- The average cost of a claim for a driver with less experience is more (~12.5%) than a driver with more experience.
+
+</div>
+
+## Claim Frequency By Driver Age{#age1}
+
+<div class="image-wrapper">
+
+```{r age, echo=FALSE,warning=FALSE,fig.align="left",fig.width=7,fig.height=6}
+
+plot1
+
+```
+</div>
+- Younger drivers are more likely to make a claim than older drivers (~3%).
+
+## Average Claim Cost By Driver Age{#age2}
+
+<div class="image-wrapper">
+```{r age2, echo=FALSE,warning=FALSE,fig.align="left",fig.width=7,fig.height=6}
+
+plot2
+
+```
+</div>
+
+- Average claims cost for younger drivers are much higher than older drivers (~12.5%).
+
+## Claims Frequency By Driver Experience and Age{#expage}
+
+<div class="image-wrapper">
+```{r drvexp_age, echo=FALSE,warning=FALSE,fig.align="center",fig.width=6,fig.height=6}
+
+plot_drvexp_age
+
+```
+</div>
+
+## Average Claim Cost By Driver Experience and Age{#expage2}
+
+<div class="image-wrapper">
+```{r drvexp_age2, echo=FALSE,warning=FALSE,fig.align="center",fig.width=6,fig.height=6}
+
+plot_drvexp_age_cs
+
+```
+</div>
