@@ -37,11 +37,23 @@ where general_nature_of_loss_name ='Collision'  and policy_brand_name like 'NRMA
 cur.execute(query1)
 rows = cur.fetchall()
 
+
+
+
 query2="""
 SELECT claim_id, string_agg(note_body, ', ') AS claim_note
 FROM   ctx.cc_pi_note
 where note_retired='0'
 GROUP  BY claim_id"""
+
+with psycopg2.connect(dbname='iadpprod', user='s107610', host='iagdcaprod.auiag.corp', password='2ea5032eb2a8') as conn:
+    with conn.cursor() as cur:
+        cur.itersize = 1000
+
+        cur.execute(query2)
+
+        for row in cursor:
+            print(row)
 
 cur.execute(query2)
 #rows2 = cur.fetchall()
@@ -94,7 +106,7 @@ for s,j in enumerate(df_extracted['claim_description']):
 test=df.iloc[lst2,]
 
 
-########################### the times in a day the accident happen ##############
+########################### times of the day when the accident happen ##############
 
 def strip_time(x) :
     b =str(x)
@@ -133,9 +145,9 @@ ax2.bar(h2.iloc[:,0], h2.iloc[:,2],color= "skyblue", lw=0, alpha=0.7)
 
 ax2.set_ylabel('proportion of fatigue claims out of all claims (%)')
 
-plt.title("times in a day when the accident occurs")
+plt.title("times of the day when the accident occurs")
 plt.show()
-#plt.savefig('accident_time.png')
+plt.savefig('accident_time.png')
 
 
 ########################## impact rating group  ####################
@@ -180,8 +192,8 @@ width =1
 plt1= ax.bar(ind+width+0.25, impact2.iloc[:,2], width=0.5,color= "skyblue", lw=0, alpha=0.5, label = 'total claims')
 ax.set_xlabel('Rating')
 
-ax2.set_ylabel('proportion of fatigue claims out of total claims (%) ')
-plt2= ax2.bar(ind+width+0.75, impact2.iloc[:,1],width=0.5, color= "green", lw=0, alpha=0.5, label = 'proportion of fatigue claims out of total claims')
+ax2.set_ylabel('proportion of fatigue claims to total claims (%) ')
+plt2= ax2.bar(ind+width+0.75, impact2.iloc[:,1],width=0.5, color= "green", lw=0, alpha=0.5, label = 'proportion of fatigue claims to total claims')
 ax.set_ylabel('total claims (%)')
 lines, labels = ax.get_legend_handles_labels()
 lines2, labels2 = ax2.get_legend_handles_labels()
@@ -399,10 +411,10 @@ sum1=sum(Counter(holiday2_count1).values())*100
 a4_2= {k: a3_2[k]*holiday2_count1[k] for k in a2_2.keys() & a3_2}
 d2= pd.DataFrame.from_dict(a3_2, orient='index')
 
-b5_1 = pd.merge(d2, d1, left_index=True, right_index=True)
+holiday_data = pd.merge(d2, d1, left_index=True, right_index=True)
 test=b5_1.reset_index(drop=True)
 
-b5_1 =test.reindex([1,0,2,3,4])
+holiday_data  =test.reindex([1,0,2,3,4])
 
 # ------plot ----
 from matplotlib import rcParams
@@ -416,9 +428,9 @@ width = 1
 fig= plt.figure(figsize=(30,10))
 ax = fig.add_subplot(111)
 
-ax.bar(ind+width-0.25, b5_1.iloc[:,1], 0.5, color='#b0c4de', label='total claims')
+ax.bar(ind+width-0.25, holiday_data.iloc[:,1], 0.5, color='#b0c4de', label='total claims')
 ax2 = ax.twinx()
-ax2.bar(ind+width+0.15,  b5_1.iloc[:,0], 0.5, color='#deb0b0', label='proportion of fatigue claims out af total claims')
+ax2.bar(ind+width+0.15,  holiday_data.iloc[:,0], 0.5, color='#deb0b0', label='proportion of fatigue claims to total claims')
 rects = ax.patches
 ax.set_xticks(ind+width)#+(width/2))
 ax.set_xticklabels(['Non Public holiday','Sat','Sun', 'long weekend', 'Public holiday \n(exclude long weekend)'], rotation=45)
@@ -437,11 +449,11 @@ ax2.legend(lines + lines2, labels + labels2, loc=0, fontsize='x-large')
 ax.xaxis.label.set_size(10)
 
 ax.set_ylabel("total claims (%)")
-ax2.set_ylabel("proportion of fatigue claims out of total claims (%)")
+ax2.set_ylabel("proportion of fatigue claims to total claims (%)")
 #ax.set_ylim(0,100)
 #ax2.set_ylim(0,100)
 plt.show()
-
+plt.savefig('holiday.png')
 
 ################################  text mining    ###############################
 nlp= spacy.load('en')
